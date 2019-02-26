@@ -5,7 +5,11 @@ let GlobalParameter = {
     getData:(params)=>{
         let data = {};
         params.forEach(param=>{
-            data[param] = GlobalParameter.obj[param];
+            if(GlobalParameter.obj[param] == undefined){
+                throw new Error(`${param} is ${GlobalParameter.obj[param]}`);
+            }else{
+                data[param] = GlobalParameter.obj[param];
+            }  
         })
         return data;
     }
@@ -25,8 +29,8 @@ let mainCollections = new Map();
 let {Schema,model} = mongoose;
 
 // configuration
-function connect(DBname){
-    mongoose.connect(`mongodb://localhost/${DBname}`);
+function connect(url){
+    mongoose.connect(url);
 }
 
 /**
@@ -67,7 +71,9 @@ function setGlobalParaemter(obj){
  */
 async function exec(statement){
     let commands = parser.parse(statement);
-    switch(commands.operation){
+    console.log(commands);
+    
+    switch(commands.method){
         case 'POST':
             return await POST(commands);
         break;
@@ -91,7 +97,7 @@ async function POST(commands){
     checkGlobalObj();
 
     let {collectionModel} = mainCollections.get(commands.collectionName);
-    let data = GlobalParameter.getData(commands.params);
+    let data = GlobalParameter.getData(commands.propertyNames);
     
     let document = new collectionModel(data);
     let result = await document.save();
