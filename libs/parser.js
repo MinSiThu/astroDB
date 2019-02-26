@@ -1,3 +1,5 @@
+let mathjs = require('mathjs');
+
 const syntaxTable = {
     WHERE:'where',
     LIMIT:'limit',
@@ -9,7 +11,7 @@ const Prefix = {
 }
 
 function Tokenize(statement){
-    let tokens = statement.split(' ');
+    let tokens = statement.split('|');
     return tokens;
 }
 
@@ -19,7 +21,7 @@ function Header(segment){
 }
 
 function Where(conditions){
-
+    return mathjs.parse(conditions);
 }
 
 function parsePropertyName(param){
@@ -38,6 +40,21 @@ function parsePOST(token){
     return {propertyNames};
 }
 
+function parseOthers(token){
+    let Query = {};
+    
+    let i = 0;
+    while(i<token.length){
+        switch(token[i]){
+            case syntaxTable.WHERE:
+                Query.where = Where(token[++i]);
+            break;
+        }
+        i++;
+    }
+    return {query:Query};
+}
+
 function generateAST(token){
     let header = Header(token.shift());
     let body;
@@ -53,7 +70,6 @@ function parse(statement){
     let tokens = Tokenize(statement);
     let AST  = generateAST(tokens);
     return AST;
-    
 }
 
 module.exports = {

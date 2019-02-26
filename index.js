@@ -1,5 +1,6 @@
 let mongoose = require('mongoose');
 let parser = require('./libs/parser');
+let QueryBuilder = require('./libs/QueryBuilder');
 
 let GlobalParameter = {
     getData:(params)=>{
@@ -71,7 +72,6 @@ function setGlobalParaemter(obj){
  */
 async function exec(statement){
     let commands = parser.parse(statement);
-    console.log(commands);
     
     switch(commands.method){
         case 'POST':
@@ -95,7 +95,7 @@ async function exec(statement){
 // Encapsulated Functions
 async function POST(commands){
     checkGlobalObj();
-
+    
     let {collectionModel} = mainCollections.get(commands.collectionName);
     let data = GlobalParameter.getData(commands.propertyNames);
     
@@ -108,7 +108,8 @@ async function GET(commands){
     checkGlobalObj();
 
     let {collectionModel} = mainCollections.get(commands.collectionName);
-    let data = GlobalParameter.getData(commands.params);
+    let Query = QueryBuilder.build(commands.query);
+   // let data = GlobalParameter.getData(commands.params);
 
     if(commands.parameterOperator == false){
         return await collectionModel.find(data);
