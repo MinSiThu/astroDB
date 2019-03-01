@@ -1,0 +1,23 @@
+{
+  "name": "astrodb",
+  "version": "1.0.0",
+  "description": "a wrapper of mongoose for better development",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "mongoose": "^5.4.15"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mongodb",
+    "mongoose",
+    "astrodb"
+  ],
+  "author": "min si thu",
+  "license": "MIT"
+}

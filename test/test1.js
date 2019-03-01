@@ -4,11 +4,12 @@ let config = require('./db.config');
 AstroDB.connect('mongodb://localhost/AstroDB');
 AstroDB.addAll(config);
 
-let statement = `Admin.GET|where|(DB.username==G.username and DB.age>12 and DB.password<=G.password)|`;
+let Query = (DB)=>{
+    return DB.exec('Post','find',{content:'what is java?'},{populate:['author']});
+}
 
 (async function() {
-    AstroDB.setGlobalParaemter({username:'test1',password:'test1',age:34});
-    let result = await AstroDB.exec(statement);
+    let result = await Query(AstroDB);
     console.log(result);
     
 })()
