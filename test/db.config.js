@@ -13,7 +13,6 @@ module.exports = function(Types){
                 },
             }
         },
-
         {
             'name':'Post',
             'schema':{
