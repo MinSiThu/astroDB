@@ -5,6 +5,12 @@
 ``` 
 AstroDB is command library of mongodb. It reduces time required to build application with mongodb.
 ```
+
+#### installation
+Download the repository and add to your project. index.js file alone is enough to apply AstroDB.
+```shell
+$:npm install 
+```
 ### It uses config files to build mongo Schema.
 #### db.config.js file 
 
@@ -97,10 +103,10 @@ DB.exec('Post','find',{content:'what is Node.js?'},{populate:['author']});
 
 #### Resulting data is 
 ```javascript
-[ { _id: 5c79664210095423542e27d3,
+[ { _id: '5c79664210095423542e27d3',
     content: 'what is java?',
     author:
-     { _id: 5c7829144b4e2d0f9c4afbe5,
+     { _id: '5c7829144b4e2d0f9c4afbe5',
        username: 'test1',
        password: 'test1',
        age: 34,
