@@ -28,11 +28,18 @@ module.exports = function(Types){
                 'searchAndGetUsername':function(query) {
                     return this.where(query).limit(10).select('username');
                 },
+            },
+            'virtuals':{
+                'status':function(){
+                    return `${this.username} is ${this.age} yrs old.`;
+                }
             }
         },
     ]
 }
 ```
+
+#### Yes, we have statics functions and virtuals properties.
 
 ### import these files.
 #### index.js
@@ -48,11 +55,11 @@ AstroDB.addAll(config);
 ```
 ### Executing a query in **AstroDB** is easy!
 ```javascript
-AstroDB.exec('Admin','new',{username:'Min Si Thu',password:'Min Si Thu',age:19});
+let result = await AstroDB.exec('Admin','new',{username:'Min Si Thu',password:'Min Si Thu',age:19});
 
 // other queries
-AstroDB.exec('Admin','find',{username:'Min Si Thu'});
-AstroDB.exec('Admin','delete',{username:'Min Si Thu',age:{$gt:15,$lt:20}});
+await AstroDB.exec('Admin','find',{username:'Min Si Thu'});
+await AstroDB.exec('Admin','delete',{username:'Min Si Thu',age:{$gt:15,$lt:20}});
 ```
 
 #### Other queries
@@ -76,7 +83,7 @@ limit,select,sort //can be used
 ```
 #### limit,sort,select
 ```javascript
-AstroDB.exec('Admin','find',{age:{$gt:15}},{limit:10,sort:'-username',select:'username age'});
+await AstroDB.exec('Admin','find',{age:{$gt:15}},{limit:10,sort:'-username',select:'username age'});
 ```
 
 ### AstroDB also allows population.
@@ -92,13 +99,13 @@ AstroDB.exec('Admin','find',{age:{$gt:15}},{limit:10,sort:'-username',select:'us
 ```
 #### Add id of Admin when creating a new Post object.
 ```javascript
-AstroDB.exec('Post','new',{content:'what is Node.js?',author:"5c7829144b4e2d0f9c4afbe5",})
+await AstroDB.exec('Post','new',{content:'what is Node.js?',author:"5c7829144b4e2d0f9c4afbe5",})
 ``` 
 
 
 #### This can be populated as 
 ```javascript
-DB.exec('Post','find',{content:'what is Node.js?'},{populate:['author']});
+await DB.exec('Post','find',{content:'what is Node.js?'},{populate:['author']});
 ```
 
 #### Resulting data is 
@@ -117,7 +124,7 @@ DB.exec('Post','find',{content:'what is Node.js?'},{populate:['author']});
 ### **AstroDB** allows aggregation framework of MongDB.
 **still experimental**
 ```javascript
-AstroDB.exec('Post','aggregate',[
+await AstroDB.exec('Post','aggregate',[
     {
         $match: {
             created: {$gt: new Date(time)}
